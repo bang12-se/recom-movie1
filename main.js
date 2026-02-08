@@ -1,1 +1,78 @@
-// Add JS here
+const data = {
+    movie: [
+        "인터스텔라 🌌", "인셉션 🌀", "기생충 ", "어벤져스: 엔드게임 🦸‍♂️",
+        "다크 나이트 🦇", "타이타닉 🚢", "라라랜드 🎶", "매트릭스 💊",
+        "글래디에이터 ⚔️", "트루먼 쇼 🎭", "조커 🤡", "포레스트 검프 🏃"
+    ],
+    anime: [
+        "너의 이름은 🌠", "슬램덩크 극장판 🏀", "귀멸의 칼날 🔥",
+        "진격의 거인 ⚔️", "주술회전 🌀", "원피스 ☠️",
+        "나루토 🍥", "에반게리온 🤖", "하이큐 🏐", "스즈메의 문단속 🚪"
+    ],
+    drama: [
+        "오징어 게임 🦑", "더 글로리 💥", "이태원 클라쓰 🍻",
+        "미스터 션샤인 🇰🇷", "응답하라 1988 📻",
+        "비밀의 숲 🌲", "도깨비 👹", "킹덤 🧟", "시그널 📟"
+    ],
+    variety: [
+        "런닝맨 🏃", "무한도전 🧠", "유 퀴즈 온 더 블럭 🎤",
+        "1박 2일 🎒", "놀면 뭐하니 🎶", "신서유기 🧳",
+        "아는 형님 📚"
+    ]
+};
+
+function recommend() {
+    const category = document.getElementById("category").value;
+    const result = document.getElementById("result");
+
+    if (!category) {
+        result.innerText = "⚠️ 카테고리를 먼저 선택하세요!";
+        return;
+    }
+
+    const list = data[category];
+    const randomIndex = Math.floor(Math.random() * list.length);
+    result.innerText = "👉 추천 콘텐츠: " + list[randomIndex];
+}
+
+// Theme switching logic
+const themeToggle = document.getElementById("theme-toggle");
+const body = document.body;
+
+// Function to set the theme
+function setTheme(theme) {
+    if (theme === "dark") {
+        body.classList.add("dark-mode");
+        themeToggle.innerText = "☀️ 라이트 모드";
+    } else {
+        body.classList.remove("dark-mode");
+        themeToggle.innerText = "🌙 다크 모드";
+    }
+    localStorage.setItem("theme", theme);
+}
+
+// Load theme preference from localStorage or detect system preference
+function loadTheme() {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+        setTheme(savedTheme);
+    } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        // System prefers dark mode
+        setTheme("dark");
+    } else {
+        // Default to light mode
+        setTheme("light");
+    }
+}
+
+// Toggle theme on button click
+themeToggle.addEventListener("click", () => {
+    if (body.classList.contains("dark-mode")) {
+        setTheme("light");
+    } else {
+        setTheme("dark");
+    }
+});
+
+// Apply theme on page load
+document.addEventListener("DOMContentLoaded", loadTheme);

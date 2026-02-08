@@ -99,11 +99,13 @@ function loadLanguage() {
     const savedLang = localStorage.getItem('lang');
     if (savedLang) {
         setLanguage(savedLang);
-    } else if (navigator.language.startsWith('ko')) {
-        setLanguage('ko');
+    } else {
+        setLanguage('ko'); // Default to Korean if no preference is saved
     }
-    else {
-        setLanguage('en'); // Default to English if no preference and not Korean system
+    // After setting the initial language, update the toggle button text
+    // This function will be defined in the next step
+    if (typeof updateLangToggleButtonText === 'function') {
+        updateLangToggleButtonText(currentLang);
     }
 }
 
@@ -162,8 +164,22 @@ themeToggle.addEventListener("click", () => {
 });
 
 // Language switching logic
-document.getElementById('lang-ko').addEventListener('click', () => setLanguage('ko'));
-document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+const langToggleButton = document.getElementById('lang-toggle');
+
+function updateLangToggleButtonText(lang) {
+    if (lang === 'ko') {
+        langToggleButton.innerText = 'English';
+    } else {
+        langToggleButton.innerText = '한국어';
+    }
+}
+
+langToggleButton.addEventListener('click', () => {
+    const newLang = currentLang === 'ko' ? 'en' : 'ko';
+    setLanguage(newLang);
+    updateLangToggleButtonText(newLang);
+});
+
 
 // Apply theme and language on page load
 document.addEventListener("DOMContentLoaded", () => {

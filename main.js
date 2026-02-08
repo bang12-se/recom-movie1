@@ -21,18 +21,105 @@ const data = {
     ]
 };
 
+const translations = {
+    ko: {
+        title: "🎬 오늘 뭐 볼까?",
+        darkMode: "🌙 다크 모드",
+        lightMode: "☀️ 라이트 모드",
+        selectCategory: "카테고리를 선택하세요",
+        movie: "🎥 영화",
+        anime: "🎌 애니메이션",
+        drama: "📺 드라마",
+        variety: "🎤 예능",
+        recommendBtn: "추천 받기",
+        warning: "⚠️ 카테고리를 먼저 선택하세요!",
+        recommendContent: "👉 추천 콘텐츠: ",
+        inquiryTitle: "🤝 제휴 문의",
+        name: "이름:",
+        email: "이메일:",
+        message: "메시지:",
+        sendInquiry: "문의 보내기"
+    },
+    en: {
+        title: "🎬 What to Watch Today?",
+        darkMode: "🌙 Dark Mode",
+        lightMode: "☀️ Light Mode",
+        selectCategory: "Select a category",
+        movie: "🎥 Movie",
+        anime: "🎌 Anime",
+        drama: "📺 Drama",
+        variety: "🎤 Variety Show",
+        recommendBtn: "Get Recommendation",
+        warning: "⚠️ Please select a category first!",
+        recommendContent: "👉 Recommended Content: ",
+        inquiryTitle: "🤝 Partnership Inquiry",
+        name: "Name:",
+        email: "Email:",
+        message: "Message:",
+        sendInquiry: "Send Inquiry"
+    }
+};
+
+let currentLang = 'ko'; // Default language
+
+function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang; // Set html lang attribute
+
+    // Update main title
+    document.querySelector('h1').innerText = translations[lang].title;
+
+    // Update category options
+    const categorySelect = document.getElementById('category');
+    categorySelect.options[0].innerText = translations[lang].selectCategory;
+    categorySelect.options[1].innerText = translations[lang].movie;
+    categorySelect.options[2].innerText = translations[lang].anime;
+    categorySelect.options[3].innerText = translations[lang].drama;
+    categorySelect.options[4].innerText = translations[lang].variety;
+
+    // Update recommend button
+    document.querySelector('button[onclick="recommend()"]').innerText = translations[lang].recommendBtn;
+
+    // Update partnership inquiry section
+    document.querySelector('#partnership-inquiry h2').innerText = translations[lang].inquiryTitle;
+    document.querySelector('label[for="name"]').innerText = translations[lang].name;
+    document.querySelector('label[for="email"]').innerText = translations[lang].email;
+    document.querySelector('label[for="message"]').innerText = translations[lang].message;
+    document.querySelector('.contact-form button[type="submit"]').innerText = translations[lang].sendInquiry;
+
+    // Update theme toggle button text
+    // This will be handled by the modified setTheme function later
+    setTheme(localStorage.getItem("theme") || (document.body.classList.contains("dark-mode") ? "dark" : "light"));
+
+
+    localStorage.setItem('lang', lang);
+}
+
+function loadLanguage() {
+    const savedLang = localStorage.getItem('lang');
+    if (savedLang) {
+        setLanguage(savedLang);
+    } else if (navigator.language.startsWith('ko')) {
+        setLanguage('ko');
+    }
+    else {
+        setLanguage('en'); // Default to English if no preference and not Korean system
+    }
+}
+
+
 function recommend() {
     const category = document.getElementById("category").value;
     const result = document.getElementById("result");
 
     if (!category) {
-        result.innerText = "⚠️ 카테고리를 먼저 선택하세요!";
+        result.innerText = translations[currentLang].warning;
         return;
     }
 
     const list = data[category];
     const randomIndex = Math.floor(Math.random() * list.length);
-    result.innerText = "👉 추천 콘텐츠: " + list[randomIndex];
+    result.innerText = translations[currentLang].recommendContent + list[randomIndex];
 }
 
 // Theme switching logic
@@ -43,10 +130,10 @@ const body = document.body;
 function setTheme(theme) {
     if (theme === "dark") {
         body.classList.add("dark-mode");
-        themeToggle.innerText = "☀️ 라이트 모드";
+        themeToggle.innerText = translations[currentLang].lightMode;
     } else {
         body.classList.remove("dark-mode");
-        themeToggle.innerText = "🌙 다크 모드";
+        themeToggle.innerText = translations[currentLang].darkMode;
     }
     localStorage.setItem("theme", theme);
 }
@@ -74,5 +161,12 @@ themeToggle.addEventListener("click", () => {
     }
 });
 
-// Apply theme on page load
-document.addEventListener("DOMContentLoaded", loadTheme);
+// Language switching logic
+document.getElementById('lang-ko').addEventListener('click', () => setLanguage('ko'));
+document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+
+// Apply theme and language on page load
+document.addEventListener("DOMContentLoaded", () => {
+    loadTheme();
+    loadLanguage();
+});

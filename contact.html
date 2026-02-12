@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연락처 - 오늘 뭐 볼까?</title>
+    <meta name="description" content="저희에게 연락주세요. 제휴, 콘텐츠 제안, 또는 기타 문의사항이 있으시면 언제든지 양식을 통해 메시지를 보내주시기 바랍니다.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="index.html" class="nav-logo">오늘 뭐 볼까?</a>
+            <div class="nav-links">
+                <a href="index.html">홈</a>
+                <a href="reviews.html">리뷰</a>
+                <a href="articles.html">아티클</a>
+                <a href="about.html">소개</a>
+                <a href="contact.html">연락처</a>
+            </div>
+            <div class="nav-controls"></div>
+        </nav>
+    </header>
+
+    <main class="content-container">
+        <article class="content-article text-centric">
+            <header class="article-header">
+                <h1>연락처</h1>
+                <p>제휴, 콘텐츠 제안, 또는 기타 궁금한 점이 있으시면 아래 양식을 통해 언제든지 문의해주세요.</p>
+            </header>
+            
+            <section class="article-section">
+                <form action="https://formspree.io/f/mlgwevkv" method="POST" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">이름:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">이메일:</label>
+                        <input type="email" id="email" name="_replyto" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">메시지:</label>
+                        <textarea id="message" name="message" rows="7" required></textarea>
+                    </div>
+
+                    <button type="submit">메시지 보내기</button>
+                </form>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 오늘 뭐 볼까?. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
